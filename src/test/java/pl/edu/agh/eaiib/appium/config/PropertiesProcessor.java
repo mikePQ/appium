@@ -1,7 +1,5 @@
 package pl.edu.agh.eaiib.appium.config;
 
-import java.io.File;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 

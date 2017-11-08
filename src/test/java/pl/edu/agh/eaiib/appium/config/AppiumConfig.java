@@ -3,6 +3,8 @@ package pl.edu.agh.eaiib.appium.config;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
@@ -29,20 +31,26 @@ public class AppiumConfig {
 
     private static DesiredCapabilities toDesiredCapabilities(ConfigProperties configProperties) {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-        desiredCapabilities.setCapability(API_KEY_ARGUMENT, configProperties.getProperty(API_KEY_ARGUMENT));
-        desiredCapabilities.setCapability(PROJECT_ARGUMENT, configProperties.getProperty(PROJECT_ARGUMENT));
-        desiredCapabilities.setCapability(APP_ID_ARGUMENT, configProperties.getProperty(APP_ID_ARGUMENT));
-        desiredCapabilities.setCapability(DEVICE_ARGUMENT, configProperties.getProperty(DEVICE_ARGUMENT));
+        desiredCapabilities.setCapability(PLATFORM_NAME, configProperties.getProperty(PLATFORM_NAME));
+        desiredCapabilities.setCapability(DEVICE, configProperties.getProperty(DEVICE));
+        desiredCapabilities.setCapability(DEVICE_NAME, configProperties.getProperty(DEVICE_NAME));
+        desiredCapabilities.setCapability(APP, configProperties.getProperty(APP));
 
         return desiredCapabilities;
     }
 
     private static final class ConfigProperties {
         private final Properties configProperties;
+        private final PropertiesProcessor propertiesProcessor = new PropertiesProcessorImpl();
 
         private ConfigProperties() throws IOException {
-            configProperties = new Properties();
-            configProperties.load(getClass().getResourceAsStream("configuration.properies"));
+            Properties tempProperties = new Properties();
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(classLoader.getResource("configuration.properties").getFile());
+            try (FileReader reader = new FileReader(file)) {
+                tempProperties.load(reader);
+                configProperties = propertiesProcessor.process(tempProperties);
+            }
         }
 
         String getProperty(String key) {
@@ -50,9 +58,9 @@ public class AppiumConfig {
         }
     }
 
-    private static String API_KEY_ARGUMENT = "testobject_api_key";
-    private static String PROJECT_ARGUMENT = "testobject_project";
-    private static String APP_ID_ARGUMENT = "testobject_app_id";
-    private static String DEVICE_ARGUMENT = "testobject_device";
+    private static String PLATFORM_NAME = "platformName";
+    private static String DEVICE = "device";
+    private static String DEVICE_NAME = "deviceName";
+    private static String APP = "app";
     private static String APPIUM_SERVER_ARGUMENT = "appium.server";
 }

@@ -20,7 +20,9 @@ public class AppiumTest {
 
     @AfterAll
     static void tearDownClass() {
-        appiumDriver.quit();
+        if (appiumDriver != null) {
+            appiumDriver.quit();
+        }
         androidEmulator.stopEmulator();
     }
 

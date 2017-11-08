@@ -18,6 +18,7 @@ public class AndroidEmulator {
 
     public void startEmulator() {
         executeCommand(emulatorConfig.emulatorPath, "-avd", emulatorConfig.avdName);
+        wait(5000);
     }
 
     public void stopEmulator() {
@@ -29,6 +30,14 @@ public class AndroidEmulator {
             return Runtime.getRuntime().exec(parameters);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void wait(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

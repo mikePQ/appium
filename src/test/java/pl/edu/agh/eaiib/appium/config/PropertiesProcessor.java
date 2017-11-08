@@ -1,15 +1,20 @@
 package pl.edu.agh.eaiib.appium.config;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.Properties;
 
 public interface PropertiesProcessor {
     Properties process(Properties properties);
+    static PropertiesProcessor createInstance() {
+        return new PropertiesProcessorImpl();
+    }
 }
 
 class PropertiesProcessorImpl implements PropertiesProcessor {
     private static final PropertiesProcessor[] PROCESSORS = new PropertiesProcessor[]{
-            new ClasspathResourcesProcessor()
+            new ClasspathResourcesProcessor(),
+            new EnvironmentVariablesProcessor()
     };
 
     @Override
@@ -21,6 +26,31 @@ class PropertiesProcessorImpl implements PropertiesProcessor {
 
         return toProcess;
     }
+
+    private static class EnvironmentVariablesProcessor implements PropertiesProcessor {
+
+        @Override
+        public Properties process(Properties properties) {
+            properties.entrySet()
+                    .stream()
+                    .forEach(entry -> entry.setValue(expandEnvVars(entry
+                            .getValue()
+                            .toString())));
+
+            return properties;
+        }
+
+        private static String expandEnvVars(String text) {
+            Map<String, String> envMap = System.getenv();
+            for (Map.Entry<String, String> entry : envMap.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                text = text.replaceAll("\\$\\{" + key + "\\}", value);
+            }
+            return text;
+        }
+    }
+
 
     private static class ClasspathResourcesProcessor implements PropertiesProcessor {
         @Override

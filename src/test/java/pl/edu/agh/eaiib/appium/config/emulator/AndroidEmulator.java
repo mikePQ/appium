@@ -1,5 +1,10 @@
 package pl.edu.agh.eaiib.appium.config.emulator;
 
+import pl.edu.agh.eaiib.appium.config.PropertiesProcessor;
+
+import java.io.*;
+import java.util.Properties;
+
 public class AndroidEmulator {
     private final EmulatorConfig emulatorConfig;
 
@@ -39,9 +44,20 @@ public class AndroidEmulator {
         }
 
         private static EmulatorConfig create() {
-            String emulatorPath = System.getProperty(EMULATOR_PATH_KEY);
-            String adbPath = System.getProperty(ADB_PATH_KEY);
-            String avdName = System.getProperty(AVD_NAME_KEY);
+            ClassLoader classLoader = AndroidEmulator.class.getClassLoader();
+            File file = new File(classLoader.getResource("emulator.properties").getFile());
+            Properties properties = new Properties();
+            try (FileReader reader = new FileReader(file)) {
+                properties.load(reader);
+                PropertiesProcessor propertiesProcessor = PropertiesProcessor.createInstance();
+                properties = propertiesProcessor.process(properties);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+
+            String emulatorPath = properties.getProperty(EMULATOR_PATH_KEY);
+            String adbPath = properties.getProperty(ADB_PATH_KEY);
+            String avdName = properties.getProperty(AVD_NAME_KEY);
 
             return new EmulatorConfig(emulatorPath, adbPath, avdName);
         }

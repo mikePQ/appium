@@ -2,7 +2,10 @@ package pl.edu.agh.eaiib.appium.config.emulator;
 
 import pl.edu.agh.eaiib.appium.config.PropertiesProcessor;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Properties;
 
 public class AndroidEmulator {

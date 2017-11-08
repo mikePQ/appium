@@ -18,7 +18,7 @@ public class AndroidEmulator {
 
     public void startEmulator() {
         executeCommand(emulatorConfig.emulatorPath, "-avd", emulatorConfig.avdName);
-        wait(5000);
+        wait(30000);
     }
 
     public void stopEmulator() {

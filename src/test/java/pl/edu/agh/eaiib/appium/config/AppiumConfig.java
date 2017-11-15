@@ -1,32 +1,37 @@
 package pl.edu.agh.eaiib.appium.config;
 
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Properties;
 
 public class AppiumConfig {
     private static AppiumConfig INSTANCE = new AppiumConfig();
+
+    private final ConfigProperties configProperties;
 
     public static AppiumConfig getInstance() {
         return INSTANCE;
     }
 
     private AppiumConfig() {
+        configProperties = createConfigProperties();
     }
 
-    public AppiumDriver getDriver() throws IOException {
-        ConfigProperties config = new ConfigProperties();
-        String appiumServer = config.getProperty(APPIUM_SERVER_ARGUMENT);
+    public AndroidDriver getDriver() throws IOException {
+        String appiumServer = configProperties.getProperty(APPIUM_SERVER_ARGUMENT);
         if (appiumServer == null) {
             throw new IllegalStateException("Appium server not configured");
         }
 
-        return new AppiumDriver(new URL(appiumServer), toDesiredCapabilities(config));
+        return new AndroidDriver(new URL(appiumServer), toDesiredCapabilities(configProperties));
     }
 
     private static DesiredCapabilities toDesiredCapabilities(ConfigProperties configProperties) {
@@ -35,8 +40,22 @@ public class AppiumConfig {
         desiredCapabilities.setCapability(DEVICE, configProperties.getProperty(DEVICE));
         desiredCapabilities.setCapability(DEVICE_NAME, configProperties.getProperty(DEVICE_NAME));
         desiredCapabilities.setCapability(APP, configProperties.getProperty(APP));
+        desiredCapabilities.setCapability(MobileCapabilityType.TAKES_SCREENSHOT, "true");
 
         return desiredCapabilities;
+    }
+
+    public File getScreenshotsDir() {
+        return new File(configProperties.getProperty(SCREENSHOTS_DIR), LocalDateTime.now().toString());
+    }
+
+    private static ConfigProperties createConfigProperties() {
+        try {
+            return new ConfigProperties();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private static final class ConfigProperties {
@@ -63,4 +82,5 @@ public class AppiumConfig {
     private static String DEVICE_NAME = "deviceName";
     private static String APP = "app";
     private static String APPIUM_SERVER_ARGUMENT = "appium.server";
+    private static String SCREENSHOTS_DIR = "screenshots.dir";
 }

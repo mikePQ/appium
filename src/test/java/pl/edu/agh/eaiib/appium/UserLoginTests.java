@@ -5,12 +5,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pl.edu.agh.eaiib.appium.junit.AppiumExtension;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(AppiumExtension.class)
 public class UserLoginTests {
@@ -85,8 +87,7 @@ public class UserLoginTests {
         WebElement submitLoginFormButton = androidDriver.findElement(By.xpath(SUBMIT_LOGIN_FORM_BUTTON_XPATH));
         submitLoginFormButton.click();
 
-        wait = new WebDriverWait(androidDriver, 60);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id(LOGIN_SUCCESSFUL_LABEL_ID)));
+        assertThrows(NoSuchElementException.class, () -> androidDriver.findElement(By.id(WRONG_LOGIN_DATA_LABEL_ID)));
     }
 
 
@@ -96,5 +97,4 @@ public class UserLoginTests {
     private static final String PASSWORD_TEXTFIELD_XPATH = "//android.webkit.WebView[@content-desc=\"Zaloguj\"]/android.view.View[3]/android.view.View[1]/android.widget.EditText[2]";
     private static final String SUBMIT_LOGIN_FORM_BUTTON_XPATH = "//android.widget.Button[@content-desc=\"Zaloguj\"]";
     private static final String WRONG_LOGIN_DATA_LABEL_ID = "Niepoprawne dane logowania";
-    private static final String LOGIN_SUCCESSFUL_LABEL_ID = "Wybrana przez Ciebie aplikacja potrzebuje następujących uprawnień:";
 }

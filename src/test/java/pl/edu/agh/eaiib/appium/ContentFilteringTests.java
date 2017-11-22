@@ -9,15 +9,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pl.edu.agh.eaiib.appium.junit.AppiumExtension;
+import pl.edu.agh.eaiib.appium.utils.Screenshot;
 
 @ExtendWith(AppiumExtension.class)
 public class ContentFilteringTests {
 
     @Test
     @DisplayName("View posts with highest rate")
-    void testContentFiltering1(AndroidDriver androidDriver) {
+    void testContentFiltering1(AndroidDriver androidDriver, Screenshot screenshot) {
         WebDriverWait wait = new WebDriverWait(androidDriver, 60);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id(FILTER_SETTINGS_BUTTON_ID)));
+
+        screenshot.createScreenshot();
 
         WebElement filterSettingsButton = androidDriver.findElementByAccessibilityId(FILTER_SETTINGS_BUTTON_ID);
         filterSettingsButton.click();
@@ -25,18 +28,24 @@ public class ContentFilteringTests {
         wait = new WebDriverWait(androidDriver, 60);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(HIGHEST_RATED_POSTS_OPTION_PATH)));
 
+        screenshot.createScreenshot();
+
         WebElement highestRatedOption = androidDriver.findElementByXPath(HIGHEST_RATED_POSTS_OPTION_PATH);
         highestRatedOption.click();
 
         wait = new WebDriverWait(androidDriver, 60);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(HIGHEST_RATED_POSTS_VIEW_LABEL_XPATH)));
+
+        screenshot.createScreenshot();
     }
 
     @Test
     @DisplayName("View most recent posts")
-    void testContentFiltering2(AndroidDriver androidDriver) {
+    void testContentFiltering2(AndroidDriver androidDriver, Screenshot screenshot) {
         WebDriverWait wait = new WebDriverWait(androidDriver, 60);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id(FILTER_SETTINGS_BUTTON_ID)));
+
+        screenshot.createScreenshot();
 
         WebElement filterSettingsButton = androidDriver.findElementByAccessibilityId(FILTER_SETTINGS_BUTTON_ID);
         filterSettingsButton.click();
@@ -44,11 +53,15 @@ public class ContentFilteringTests {
         wait = new WebDriverWait(androidDriver, 60);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(MOST_RECENT_POSTS_OPTION_XPATH)));
 
+        screenshot.createScreenshot();
+
         WebElement mostRecentOption = androidDriver.findElementByXPath(MOST_RECENT_POSTS_OPTION_XPATH);
         mostRecentOption.click();
 
         wait = new WebDriverWait(androidDriver, 120);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(MOST_RECENT_POSTS_VIEW_LABEL_XPATH)));
+
+        screenshot.createScreenshot();
     }
 
     private static final String FILTER_SETTINGS_BUTTON_ID = "More options";

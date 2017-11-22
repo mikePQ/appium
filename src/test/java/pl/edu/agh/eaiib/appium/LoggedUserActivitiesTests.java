@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pl.edu.agh.eaiib.appium.junit.AppiumExtension;
+import pl.edu.agh.eaiib.appium.utils.Screenshot;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,15 +20,19 @@ public class LoggedUserActivitiesTests {
 
     @Test
     @DisplayName("Logged user can add post")
-    void testLoggedUserActivities1(AndroidDriver androidDriver) {
+    void testLoggedUserActivities1(AndroidDriver androidDriver, Screenshot screenshot) {
         WebDriverWait wait = new WebDriverWait(androidDriver, 120);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id(ADD_NEW_POST_BUTTON_ID)));
+
+        screenshot.createScreenshot();
 
         WebElement addNewPostButton = androidDriver.findElementById(ADD_NEW_POST_BUTTON_ID);
         addNewPostButton.click();
 
         wait = new WebDriverWait(androidDriver, 120);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(ADD_NEW_POST_VIEW_LABEL_XPATH)));
+
+        screenshot.createScreenshot();
 
         WebElement addNewPostViewLabel = androidDriver.findElementByXPath(ADD_NEW_POST_VIEW_LABEL_XPATH);
         assertNotNull(addNewPostViewLabel);
@@ -36,15 +41,19 @@ public class LoggedUserActivitiesTests {
 
     @Test
     @DisplayName("Logged user can add comment")
-    void testLoggedUserActivities2(AndroidDriver androidDriver) {
+    void testLoggedUserActivities2(AndroidDriver androidDriver, Screenshot screenshot) {
         WebDriverWait wait = new WebDriverWait(androidDriver, 120);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(ADD_COMMENT_BUTTON_XPATH)));
+
+        screenshot.createScreenshot();
 
         WebElement addCommentButton = androidDriver.findElementByXPath(ADD_COMMENT_BUTTON_XPATH);
         addCommentButton.click();
 
         wait = new WebDriverWait(androidDriver, 120);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id(ADD_COMMENT_FIELD_ID)));
+
+        screenshot.createScreenshot();
 
         WebElement addCommentField = androidDriver.findElementById(ADD_COMMENT_FIELD_ID);
         assertNotNull(addCommentField);
@@ -53,9 +62,11 @@ public class LoggedUserActivitiesTests {
 
     @Test
     @DisplayName("Logged user can rate post")
-    void testLoggedUserActivities3(AndroidDriver androidDriver) {
+    void testLoggedUserActivities3(AndroidDriver androidDriver, Screenshot screenshot) {
         WebDriverWait wait = new WebDriverWait(androidDriver, 120);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(RATE_POST_BUTTON_XPATH)));
+
+        screenshot.createScreenshot();
 
         WebElement ratePostButton = androidDriver.findElementByXPath(RATE_POST_BUTTON_XPATH);
         assertNotNull(ratePostButton);
@@ -64,9 +75,12 @@ public class LoggedUserActivitiesTests {
     }
 
     @BeforeEach
-    void login(AndroidDriver androidDriver) {
+    void login(AndroidDriver androidDriver, Screenshot screenshot) {
         WebDriverWait wait = new WebDriverWait(androidDriver, 60);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id(MENU_BUTTON_ID)));
+
+        screenshot.createScreenshot();
+
         WebElement menuButton = androidDriver.findElement(By.id(MENU_BUTTON_ID));
         assertNotNull(menuButton);
         menuButton.click();
@@ -75,15 +89,21 @@ public class LoggedUserActivitiesTests {
         wait.until(ExpectedConditions.presenceOfElementLocated(By
                 .xpath(LOGIN_BUTTON_XPATH)));
 
+        screenshot.createScreenshot();
+
         WebElement loginButton = androidDriver.findElement(By.xpath(LOGIN_BUTTON_XPATH));
         loginButton.click();
 
         wait = new WebDriverWait(androidDriver, 60);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(USERNAME_TEXTFIELD_XPATH)));
 
+        screenshot.createScreenshot();
+
         WebElement usernameField = androidDriver.findElement(By.xpath(USERNAME_TEXTFIELD_XPATH));
         usernameField.sendKeys("bgtzxc");
         androidDriver.hideKeyboard();
+
+        screenshot.createScreenshot();
 
         WebElement passwordField = androidDriver.findElement(By.xpath(PASSWORD_TEXTFIELD_XPATH));
         passwordField.sendKeys("qwerty");
@@ -91,6 +111,8 @@ public class LoggedUserActivitiesTests {
 
         wait = new WebDriverWait(androidDriver, 60);
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath(SUBMIT_LOGIN_FORM_BUTTON_XPATH)));
+
+        screenshot.createScreenshot();
 
         WebElement submitLoginFormButton = androidDriver.findElement(By.xpath(SUBMIT_LOGIN_FORM_BUTTON_XPATH));
         submitLoginFormButton.click();

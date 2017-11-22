@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pl.edu.agh.eaiib.appium.junit.AppiumExtension;
+import pl.edu.agh.eaiib.appium.utils.Screenshot;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,15 +19,19 @@ public class UnauthenticatedUserTests {
 
     @Test
     @DisplayName("Button for adding new posts should not be available for unauthenticated users")
-    void testUnauthenticatedUser1(AndroidDriver androidDriver) {
+    void testUnauthenticatedUser1(AndroidDriver androidDriver, Screenshot screenshot) {
+        screenshot.createScreenshot();
         assertThrows(NoSuchElementException.class, () -> androidDriver.findElement(By.id(ADD_NEW_POST_BUTTON_ID)));
     }
 
     @Test
     @DisplayName("Unauthenticated user cannot add comment")
-    void testUnauthenticatedUser2(AndroidDriver androidDriver) {
+    void testUnauthenticatedUser2(AndroidDriver androidDriver, Screenshot screenshot) {
         WebDriverWait wait = new WebDriverWait(androidDriver, 120);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(COMMENT_POST_BUTTON_XPATH)));
+
+        screenshot.createScreenshot();
+
         WebElement commentPostButton = androidDriver.findElement(By.xpath(COMMENT_POST_BUTTON_XPATH));
         assertNotNull(commentPostButton);
         commentPostButton.click();
@@ -34,6 +39,8 @@ public class UnauthenticatedUserTests {
         wait = new WebDriverWait(androidDriver, 30);
         wait.until(ExpectedConditions.presenceOfElementLocated(By
                 .id(SINGLE_POST_VIEW_ID)));
+
+        screenshot.createScreenshot();
 
         WebElement singlePostView = androidDriver.findElement(By.id(SINGLE_POST_VIEW_ID));
         assertNotNull(singlePostView);
@@ -43,12 +50,17 @@ public class UnauthenticatedUserTests {
 
     @Test
     @DisplayName("Unauthenticated user cannot vote for post")
-    void testUnauthenticatedUser3(AndroidDriver androidDriver) {
+    void testUnauthenticatedUser3(AndroidDriver androidDriver, Screenshot screenshot) {
         WebDriverWait wait = new WebDriverWait(androidDriver, 120);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id(VOTE_FOR_POST_BUTTON_ID)));
+
+        screenshot.createScreenshot();
+
         WebElement voteForPostButton = androidDriver.findElement(By.id(VOTE_FOR_POST_BUTTON_ID));
         assertNotNull(voteForPostButton);
         voteForPostButton.click();
+
+        screenshot.createScreenshot();
 
         WebElement errorMessageDialog = androidDriver.findElement(By.id(ERROR_MESSAGE_DIALOG_ID));
         assertNotNull(errorMessageDialog);
@@ -58,9 +70,12 @@ public class UnauthenticatedUserTests {
 
     @Test
     @DisplayName("Unauthenticated user cannot vote for post in single post view")
-    void testUnauthenticatedUser4(AndroidDriver androidDriver) {
+    void testUnauthenticatedUser4(AndroidDriver androidDriver, Screenshot screenshot) {
         WebDriverWait wait = new WebDriverWait(androidDriver, 120);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(COMMENT_POST_BUTTON_XPATH)));
+
+        screenshot.createScreenshot();
+
         WebElement commentPostButton = androidDriver.findElement(By.xpath(COMMENT_POST_BUTTON_XPATH));
         assertNotNull(commentPostButton);
         commentPostButton.click();
@@ -68,6 +83,8 @@ public class UnauthenticatedUserTests {
         wait = new WebDriverWait(androidDriver, 30);
         wait.until(ExpectedConditions.presenceOfElementLocated(By
                 .id(SINGLE_POST_VIEW_ID)));
+
+        screenshot.createScreenshot();
 
         WebElement singlePostView = androidDriver.findElement(By.id(SINGLE_POST_VIEW_ID));
         assertNotNull(singlePostView);

@@ -13,16 +13,22 @@ import java.time.LocalDateTime;
 import java.util.Properties;
 
 public class AppiumConfig {
-    private static AppiumConfig INSTANCE = new AppiumConfig();
+    private static AppiumConfig INSTANCE;
 
     private final ConfigProperties configProperties;
+    private final File screenshotsDir;
 
-    public static AppiumConfig getInstance() {
+    public static synchronized AppiumConfig getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new AppiumConfig();
+        }
+
         return INSTANCE;
     }
 
     private AppiumConfig() {
         configProperties = createConfigProperties();
+        screenshotsDir = new File(configProperties.getProperty(SCREENSHOTS_DIR), LocalDateTime.now().toString());
     }
 
     public AndroidDriver getDriver() throws IOException {
@@ -46,7 +52,7 @@ public class AppiumConfig {
     }
 
     public File getScreenshotsDir() {
-        return new File(configProperties.getProperty(SCREENSHOTS_DIR), LocalDateTime.now().toString());
+        return screenshotsDir;
     }
 
     private static ConfigProperties createConfigProperties() {

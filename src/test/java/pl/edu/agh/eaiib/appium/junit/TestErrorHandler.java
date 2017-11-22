@@ -20,10 +20,12 @@ public class TestErrorHandler {
     }
 
     public void handleTestError(ExtensionContext context, Throwable throwable) throws Throwable {
-        File screenshotFile = new File(screenshotsDir, context.getDisplayName() + ".png");
-        Utils.createScreenshot(androidDriver, screenshotFile);
-
-        throw throwable;
+        try {
+            File screenshotFile = new File(screenshotsDir, context.getDisplayName() + ".png");
+            Utils.createScreenshot(androidDriver, screenshotFile);
+        } finally {
+            throw throwable;
+        }
     }
 
     void setAndroidDriver(AndroidDriver androidDriver) {

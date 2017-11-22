@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pl.edu.agh.eaiib.appium.junit.AppiumExtension;
+import pl.edu.agh.eaiib.appium.utils.Screenshot;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -19,9 +20,12 @@ public class UserLoginTests {
 
     @Test
     @DisplayName("Cannot login with incorrect username and password")
-    void testLogin1(AndroidDriver androidDriver) {
+    void testLogin1(AndroidDriver androidDriver, Screenshot screenshot) {
         WebDriverWait wait = new WebDriverWait(androidDriver, 120);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id(MENU_BUTTON_ID)));
+
+        screenshot.createScreenshot();
+
         WebElement menuButton = androidDriver.findElement(By.id(MENU_BUTTON_ID));
         assertNotNull(menuButton);
         menuButton.click();
@@ -30,15 +34,21 @@ public class UserLoginTests {
         wait.until(ExpectedConditions.presenceOfElementLocated(By
                 .xpath(LOGIN_BUTTON_XPATH)));
 
+        screenshot.createScreenshot();
+
         WebElement loginButton = androidDriver.findElement(By.xpath(LOGIN_BUTTON_XPATH));
         loginButton.click();
 
         wait = new WebDriverWait(androidDriver, 60);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(USERNAME_TEXTFIELD_XPATH)));
 
+        screenshot.createScreenshot();
+
         WebElement usernameField = androidDriver.findElement(By.xpath(USERNAME_TEXTFIELD_XPATH));
         usernameField.sendKeys("test@test.test");
         androidDriver.hideKeyboard();
+
+        screenshot.createScreenshot();
 
         WebElement passwordField = androidDriver.findElement(By.xpath(PASSWORD_TEXTFIELD_XPATH));
         passwordField.sendKeys("test");
@@ -47,8 +57,12 @@ public class UserLoginTests {
         wait = new WebDriverWait(androidDriver, 60);
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath(SUBMIT_LOGIN_FORM_BUTTON_XPATH)));
 
+        screenshot.createScreenshot();
+
         WebElement submitLoginFormButton = androidDriver.findElement(By.xpath(SUBMIT_LOGIN_FORM_BUTTON_XPATH));
         submitLoginFormButton.click();
+
+        screenshot.createScreenshot();
 
         wait = new WebDriverWait(androidDriver, 60);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id(WRONG_LOGIN_DATA_LABEL_ID)));
@@ -56,9 +70,12 @@ public class UserLoginTests {
 
     @Test
     @DisplayName("User can login with correct username and password")
-    void testLogin2(AndroidDriver androidDriver) {
+    void testLogin2(AndroidDriver androidDriver, Screenshot screenshot) {
         WebDriverWait wait = new WebDriverWait(androidDriver, 120);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id(MENU_BUTTON_ID)));
+
+        screenshot.createScreenshot();
+
         WebElement menuButton = androidDriver.findElement(By.id(MENU_BUTTON_ID));
         assertNotNull(menuButton);
         menuButton.click();
@@ -67,15 +84,21 @@ public class UserLoginTests {
         wait.until(ExpectedConditions.presenceOfElementLocated(By
                 .xpath(LOGIN_BUTTON_XPATH)));
 
+        screenshot.createScreenshot();
+
         WebElement loginButton = androidDriver.findElement(By.xpath(LOGIN_BUTTON_XPATH));
         loginButton.click();
 
         wait = new WebDriverWait(androidDriver, 60);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(USERNAME_TEXTFIELD_XPATH)));
 
+        screenshot.createScreenshot();
+
         WebElement usernameField = androidDriver.findElement(By.xpath(USERNAME_TEXTFIELD_XPATH));
         usernameField.sendKeys("bgtzxc");
         androidDriver.hideKeyboard();
+
+        screenshot.createScreenshot();
 
         WebElement passwordField = androidDriver.findElement(By.xpath(PASSWORD_TEXTFIELD_XPATH));
         passwordField.sendKeys("qwerty");
@@ -83,6 +106,8 @@ public class UserLoginTests {
 
         wait = new WebDriverWait(androidDriver, 60);
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath(SUBMIT_LOGIN_FORM_BUTTON_XPATH)));
+
+        screenshot.createScreenshot();
 
         WebElement submitLoginFormButton = androidDriver.findElement(By.xpath(SUBMIT_LOGIN_FORM_BUTTON_XPATH));
         submitLoginFormButton.click();
